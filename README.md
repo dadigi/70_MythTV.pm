@@ -1,2 +1,2 @@
-# 70_MythTV.pm
+# FHEM-MythTV
 MythTV-API module for FHEM
