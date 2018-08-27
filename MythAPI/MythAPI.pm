@@ -31,9 +31,10 @@ sub new{
     );   
    
     my $self   = {
-        '_server'            =>    undef,
-        '_backendport'    =>    6544,
-        '_frontendport'    =>    6547,
+        '_server'       =>  undef,
+        '_backendport'  =>  6544,
+        '_frontendport' =>  6547,
+        '_securitypin'  =>  0000,
         'MythVersions'    => {},
         'Services'        => {}
     };   
@@ -51,7 +52,10 @@ sub new{
             }
             elsif ( $key eq 'frontendport') {
                 $self->{_frontendport} = $options{$key};
-            }           
+            }
+            elsif ( $key eq 'securitypin') {
+                $self->{_securitypin} = $options{$key};
+            }
         }
         if ( !defined $self->{_server}) {
             die("must at least specify a server to connect to.");
@@ -158,7 +162,7 @@ sub _getMajorMinorVersion {
     my $self = shift;
    
     my $temp = $self->_buildSOAPConnection("Myth");
-    my $data = $temp->GetConnectionInfo();
+    my $data = $temp->GetConnectionInfo(PIN=>$self->{_securitypin});
     my $ret = $data->{Version}->{Version};
    
     #Get only Major and Minor version from returned string.
