@@ -34,7 +34,6 @@ sub new{
         '_server'       =>  undef,
         '_backendport'  =>  6544,
         '_frontendport' =>  6547,
-        '_securitypin'  =>  0000,
         'MythVersions'    => {},
         'Services'        => {}
     };   
@@ -52,9 +51,6 @@ sub new{
             }
             elsif ( $key eq 'frontendport') {
                 $self->{_frontendport} = $options{$key};
-            }
-            elsif ( $key eq 'securitypin') {
-                $self->{_securitypin} = $options{$key};
             }
         }
         if ( !defined $self->{_server}) {
@@ -160,9 +156,8 @@ sub _matchAPI {
 #Get the current mythtv version.
 sub _getMajorMinorVersion {
     my $self = shift;
-   
     my $temp = $self->_buildSOAPConnection("Myth");
-    my $data = $temp->GetConnectionInfo(PIN=>$self->{_securitypin});
+    my $data = $temp->GetConnectionInfo();
     my $ret = $data->{Version}->{Version};
    
     #Get only Major and Minor version from returned string.
